@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
+
 namespace TechJobsConsole
 {
     class JobData
@@ -14,7 +15,8 @@ namespace TechJobsConsole
         {
             LoadData();
             return AllJobs;
-        }
+        
+    }
 
         /*
          * Returns a list of all values contained in a given column,
@@ -35,6 +37,7 @@ namespace TechJobsConsole
                     values.Add(aValue);
                 }
             }
+            values.Sort();
             return values;
         }
 
@@ -49,7 +52,7 @@ namespace TechJobsConsole
             {
                 string aValue = row[column];
 
-                if (aValue.Contains(value))
+                if (aValue.ToLower(). Contains(value.ToLower()))
                 {
                     jobs.Add(row);
                 }
@@ -61,7 +64,38 @@ namespace TechJobsConsole
         /*
          * Load and parse data from job_data.csv
          */
+        public static List<Dictionary<string, string>> FindByValue(string value)
+        {
+            LoadData();
+
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+            string aValue = "";
+            string lowerValue = value.ToLower();
+            foreach (Dictionary<string, string> row in AllJobs)
+            {
+                foreach (KeyValuePair<string, string> line in row)
+
+                {
+                    aValue += line;
+                    aValue = aValue.ToLower();
+
+
+
+                    if (aValue.Contains(lowerValue) && !jobs.Contains(row))
+
+
+                    { jobs.Add(row); }
+                    aValue = "";
+
+                }
+
+            }
+            return jobs;
+        }
+            
+        
         private static void LoadData()
+
         {
 
             if (IsDataLoaded)
@@ -137,6 +171,12 @@ namespace TechJobsConsole
             valueBuilder.Clear();
 
             return rowValues.ToArray();
+
+
         }
+        
+
     }
 }
+
+
